@@ -11,6 +11,14 @@ def driver():
     driver.quit()
 
 @pytest.fixture
+def open_base_url(driver):
+    driver.get(URLS.BASE_URL)
+
+@pytest.fixture
+def open_reg_page(driver):
+    driver.get(URLS.REG_PAGE_URL)
+
+@pytest.fixture
 def get_login_driver(driver):
     driver.get(URLS.BASE_URL)
     driver.find_element(*MainPageLocators.personal_account_btn).click()

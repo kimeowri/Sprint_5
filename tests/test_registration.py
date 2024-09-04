@@ -2,7 +2,7 @@ from dbm import error
 
 from selenium.webdriver.support.expected_conditions import visibility_of
 from data import User, RandomUser
-from conftest import driver
+from conftest import driver, open_reg_page
 from locators import RegistrationPageLocators, AuthorizationPageLocators
 from urls import *
 from selenium.webdriver.support.wait import WebDriverWait
@@ -10,8 +10,7 @@ from selenium.webdriver.support import expected_conditions as ec
 
 class TestRegistrationPage:
 
-    def test_registration_success(self,driver):
-        driver.get(URLS.REG_PAGE_URL)
+    def test_registration_success(self,open_reg_page,driver):
         WebDriverWait(driver, 20).until(ec.visibility_of_element_located(RegistrationPageLocators.registration_btn))
         driver.find_element(*RegistrationPageLocators.name_input).send_keys(RandomUser.user_name)
         driver.find_element(*RegistrationPageLocators.email_input).send_keys(RandomUser.email)
@@ -22,8 +21,7 @@ class TestRegistrationPage:
 
         assert driver.current_url == URLS.AUTH_PAGE_URL and login_button_displayer
 
-    def test_registration_with_invalid_password_error(self,driver):
-        driver.get(URLS.REG_PAGE_URL)
+    def test_registration_with_invalid_password_error(self,open_reg_page,driver):
         WebDriverWait(driver,15).until(ec.visibility_of_element_located(RegistrationPageLocators.registration_btn))
         driver.find_element(*RegistrationPageLocators.name_input).send_keys(RandomUser.user_name)
         driver.find_element(*RegistrationPageLocators.email_input).send_keys(RandomUser.email)
@@ -34,8 +32,7 @@ class TestRegistrationPage:
 
         assert (error == 'Некорректный пароль') and (driver.current_url == URLS.REG_PAGE_URL)
 
-    def test_error_message_displayed_duplicate_registration(self,driver):
-        driver.get(URLS.REG_PAGE_URL)
+    def test_error_message_displayed_duplicate_registration(self,open_reg_page,driver):
         WebDriverWait(driver,15).until(ec.visibility_of_element_located(RegistrationPageLocators.registration_btn))
         driver.find_element(*RegistrationPageLocators.name_input).send_keys(User.user_name)
         driver.find_element(*RegistrationPageLocators.email_input).send_keys(User.email)
